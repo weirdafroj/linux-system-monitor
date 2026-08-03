@@ -1,4 +1,4 @@
-# Linux System Monitor
+# Linux System Monitor 
 
 A simple Bash script that monitors the health of a Linux system by displaying important system information such as CPU usage, memory usage, disk usage, uptime, and the most CPU-intensive processes.
 
@@ -13,7 +13,7 @@ A simple Bash script that monitors the health of a Linux system by displaying im
 - Performs basic system health checks
 - Generates warnings when CPU, memory, or disk usage exceeds 80%
 
-## Technologies Used
+### Technologies Used
 
 - Bash
 - Linux
