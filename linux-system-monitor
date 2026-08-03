@@ -1,0 +1,55 @@
+#!/bin/bash
+
+echo "======================================"
+echo "       LINUX SYSTEM MONITOR"
+echo "======================================"
+echo "Hostname: $(hostname)"
+echo "Date: $(date)"
+echo "Uptime: $(uptime -p)"
+echo
+
+echo "---------- CPU USAGE ----------"
+top -bn1 | grep "Cpu(s)" | awk '{print "CPU Usage: " 100 - $8 "%"}'
+
+echo
+echo "---------- MEMORY USAGE ----------"
+free -h
+
+echo
+echo "---------- DISK USAGE ----------"
+df -h | grep '^/dev/'
+
+echo
+echo "---------- TOP PROCESSES ----------"
+ps aux --sort=-%cpu | head -6
+
+echo
+echo "---------- SYSTEM HEALTH ----------"
+
+CPU=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8}')
+MEM=$(free | awk '/Mem:/ {printf "%.0f", $3/$2 * 100}')
+DISK=$(df / | awk 'NR==2 {print $5}' | tr -d '%')
+
+echo "CPU Usage: $CPU%"
+echo "Memory Usage: $MEM%"
+echo "Disk Usage: $DISK%"
+
+if (( ${CPU%.*} > 80 )); then
+    echo "WARNING: High CPU usage!"
+else
+    echo "CPU Status: OK"
+fi
+
+if (( MEM > 80 )); then
+    echo "WARNING: High memory usage!"
+else
+    echo "Memory Status: OK"
+fi
+
+if (( DISK > 80 )); then
+    echo "WARNING: Low disk space!"
+else
+    echo "Disk Status: OK"
+fi
+
+echo "======================================"
